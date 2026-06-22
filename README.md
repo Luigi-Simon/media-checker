@@ -1,36 +1,30 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# media-checker
 
-## Getting Started
+**media-checker** is a high-performance media inspection dashboard designed for bulk quality assurance. It allows teams to upload large datasets of media links (CSV/XLSX), view live previews of those media files (Images, YouTube, TikTok), annotate them, and export the results.
 
-First, run the development server:
+It is built to handle thousands of rows of data seamlessly using virtualized rendering, ensuring the dashboard never lags, even with large datasets.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Core Features
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+* **Bulk Media Inspection:** Upload CSV, TXT, or XLSX files via drag-and-drop.
+* **Live Media Previews:**
+    * **Images:** Auto-detects and renders images.
+    * **Standard Video:** Renders native .mp4, .webm, and .ogg files.
+    * **YouTube:** Direct iframe embedding.
+    * **TikTok:** Integrated player using an API proxy to bypass embed restrictions, falling back to official embeds if necessary.
+* **Data Management:**
+    * **In-Table Editing:** Update "Remark" fields and "isFaulty" checkboxes directly.
+    * **Live Filtering:** Isolate "Faulty" or "Non-Faulty" rows in real-time.
+    * **Jump-to-Row:** Instant navigation to specific row numbers.
+* **Performance:** Uses `react-virtuoso` for windowed rendering, keeping the app fast with thousands of rows.
+* **UI/UX:** Responsive design with a Dark Mode toggle.
+* **Export:** One-click CSV export to save marked data.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Tech Stack
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+* **Framework:** Next.js (React)
+* **Styling:** Tailwind CSS
+* **Performance:** react-virtuoso
+* **File Parsing:** papaparse & xlsx
+* **File Upload:** react-dropzone
+* **Iconography:** lucide-react
