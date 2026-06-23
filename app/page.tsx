@@ -211,18 +211,25 @@ export default function MediaCheckerDashboard() {
     setData(prev => prev.map(row => row._id === id ? { ...row, remark: text } : row));
   }, []);
 
-  const handleExportCSV = () => {
+  // --- NEW EXCEL EXPORT FUNCTION ---
+  const handleExportExcel = () => {
     if (data.length === 0) return alert("No data to export!");
+    
+    // 1. Prepare the data (stripping out our internal _id and _originalIndex)
     const exportData = data.map(({ _id, _originalIndex, ...rest }) => ({
       ...rest,
       remark: remarksRef.current[_id] ?? rest.remark,
     }));
-    const csv = Papa.unparse(exportData);
-    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-    const link = document.createElement('a');
-    link.href = URL.createObjectURL(blob);
-    link.download = 'media-checker-export.csv';
-    link.click();
+
+    // 2. Convert the JSON data to an Excel worksheet
+    const worksheet = XLSX.utils.json_to_sheet(exportData);
+    
+    // 3. Create a new workbook and add the worksheet to it
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Media Checker Data");
+    
+    // 4. Trigger the download automatically
+    XLSX.writeFile(workbook, 'media-checker-export.xlsx');
   };
 
   const filteredData = React.useMemo(() => {
@@ -475,9 +482,9 @@ export default function MediaCheckerDashboard() {
               </form>
             )}
 
-            {/* EXPORT BUTTON */}
-            <button onClick={handleExportCSV} className="bg-green-600 hover:bg-green-700 text-white px-4 py-1.5 rounded flex items-center gap-2 transition-colors ml-auto">
-              <Download size={16} /> Export Data
+            {/* EXCEL EXPORT BUTTON */}
+            <button onClick={handleExportExcel} className="bg-green-600 hover:bg-green-700 text-white px-4 py-1.5 rounded flex items-center gap-2 transition-colors ml-auto">
+              <Download size={16} /> Export to Excel
             </button>
           </div>
 
